@@ -1,0 +1,14 @@
+CREATE TABLE TIDDLER (
+  id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  namespace VARCHAR(100) NULL,
+  title VARCHAR(255) NULL,
+  text text NULL,
+  tags VARCHAR(255) NULL,
+  created VARCHAR(30) NULL,
+  modified VARCHAR(30) NULL,
+  modifier VARCHAR(30) NULL,
+  PRIMARY KEY(id)
+)
+TYPE=InnoDB;
+
+

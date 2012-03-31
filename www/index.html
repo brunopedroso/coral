@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1"
+ http-equiv="content-type">
+  <link rel="stylesheet" type="text/css" href="style/style.css"
+ media="print">
+  <title>coral</title>
+</head>
+<body>
+<span style="font-weight: bold;"><br>
+</span>Coral is a wiki tool based on <a
+ href="http://www.tiddlywiki.com">TiddlyWiki</a>.
+The main diference between them is that Coral is <span
+ style="font-weight: bold;">server side</span>.
+There's a lot of other server-side TiddlyWiki, but until the moment I
+started writing Coral, there was none of them writen in <span
+ style="font-weight: bold;">Java/JEE</span>. <br>
+<br>
+<h3>Major features</h3>
+Coral is <strong>server-side</strong>, written in <strong>java</strong>,
+and folows the<strong> JEE</strong> specs to run on a JEE compliant
+server, like <a target="_blank"
+ title="External link to http://tomcat.apache.org/"
+ href="http://tomcat.apache.org/" class="externalLink">Tomcat</a>.<br>
+<br>
+<ul>
+  <li> It <strong>reads the content (tiddlers) over demand</strong>,
+with ajax, reducing the time to load the page for the first time.</li>
+  <li> It stores the content of the tiddlers in a <strong>relational
+database</strong>, like <a target="_blank"
+ title="External link to http://www.mysql.com/"
+ href="http://www.mysql.com/" class="externalLink">MySQL</a>.</li>
+  <li> It organize the content in <strong>chunks of topics</strong>
+(tiddlers) called <strong>namespaces</strong>. Each namespace
+corresponds to a separate content, a whole self-contained wiki. It's
+like having various <a tiddlylink="TiddlyWiki" refresh="link"
+ class="tiddlyLink tiddlyLinkExisting"
+ title="TiddlyWiki - BrunoPedroso, Qua 03 Jan 2007 17:13:00 BRST"
+ href="http://www.tiddlywiki.com">TiddlyWiki</a> files. We have a macro
+that lets
+you create <strong>links</strong> from one namespace to another.</li>
+</ul>
+<br>
+
+<h3>Releases</h3>
+<p>You can download the latest versions <a href="servlets/ProjectDocumentList">here</a>.<br>
+</p>
+
+<h3>How to install</h3>
+
+<h4><li>CreateTheDatabase;</h4>
+
+Once you have sucessfully intalled mysql, log into with the root user (initialy with a blank password... maybe you should change it!)
+
+<pre style="background-color: #a0a0a0">
+$> mysql -u root
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 7 to server version: 5.0.22-Debian_0ubuntu6.06.2-log
+
+Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
+
+mysql>
+</pre>
+
+then create a database named coral, and the coral user:
+
+<pre style="background-color: #a0a0a0">
+mysql>create database coral
+Query OK, 1 row affected (0.02 sec)
+mysql> grant all privileges on coral.* to 'coral'@'localhost';
+Query OK, 0 rows affected (0.00 sec)
+mysql> set password for 'coral'@'localhost' = password('coral');
+Query OK, 0 rows affected (0.00 sec)
+</pre>
+
+Now you must create the database schema. I've written it with DBDesigner, and the file is in the src/bd directory of the Coral's source. The create.sql scrips is in the same directory and can be used to create the tables in mysql:
+
+<pre style="background-color: #a0a0a0">
+$> mysql -u coral -pcoral coral
+mysql> source create.sql;
+Query OK, 0 rows affected, 1 warning (0.17 sec)
+</pre>
+
+
+<h4><li>install tomcat (you can use any other JEE compliant web container...)</h4>
+<a href="http://tomcat.apache.org/">go here to see how</a>
+<h4><li>Download the <a href="">coral.war</a> binary file, or build it from the sources and save it in the webapps directory of the tomcat distribution;</h4>
+<h4><li>configure the DatabaseResource on the server, creating the coral.xml file in the conf/Catalina/localhost directory of tomcat.</h4>
+
+You have to configure your context like this:
+<pre style="background-color: #a0a0a0">
+&lt;Context path="/coral"\&gt;
+
+	&lt;Resource name="jdbc/CoralDB" auth="Container" type="javax.sql.DataSource"
+               maxActive="100" maxIdle="30" maxWait="10000"
+               username="coral" password="coral" driverClassName="com.mysql.jdbc.Driver"
+               url="jdbc:mysql://localhost:3306/coral?autoReconnect=true"/&gt;
+&lt;/context&gt
+</pre>
+
+(Be careful if you are using old versions of tomcat. This configuration have changed and this doesn't produces a meaninfull error. Refer to the tomcat documentation directly if necessary)
+
+
+<h4><li>put the mysql driver in the server/lib directory of tomcat</h4>
+<h4><li>start the server</h4>
+<h4><li>access http://localhost:8080/coral/coral.jsp</h4>
+
+
+<h3>How to participate</h3>
+<p>First, know that <b>we apreciate any help!</b>
+<p>Please, use the project mailing lists for sending us any <b>feedback</b> related to this project.
+<p><b>I suggest you </b>try to install, test and use coral; after you can give some feedback and sugestions or even help documenting better something I missed. If you have any idea about how to improve coral, or detect any bug, please send an email or post an issue. If you feel confortable to implement any issue, or have patches, we appreciate too... In fact, we appreciate ANY help! :-)
+
+<h3>How to build</h3>
+
+Coral uses Maven and Subversion to manage the software configuration, so to build coral, you must:
+	<li>	install Maven;
+	<li>	install Subversion;
+	<li>	install MySQL and create the schema; (I've written some tests that access the database... Maybe we should change this...until there, you'll need it to build with maven)
+	<li>	make a checkout of the latest tag from subversion (or trunk, if you want to work on the development version) ;
+
+And then, just run this on the root of the project:
+<pre style="background-color: #a0a0a0">
+ $> mvn package
+</pre>
+(You may use the -Dmaven.test.skip=true if you don't want to boder with the database yet.)
+<br>It'll download some jars, compile and generate a file target/coral.war. It's the binary to install on the server! 
+
+<h3>Thank's</h3>
+<a href="http://www.seatecnologia.com.br"><img src="img/sea_logo.jpg"></img></a>
+
+
+</body>
+</html>

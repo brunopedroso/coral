@@ -1,0 +1,36 @@
+<!DOCTYPE dwr PUBLIC
+    "-//GetAhead Limited//DTD Direct Web Remoting 1.0//EN"
+    "http://www.getahead.ltd.uk/dwr/dwr10.dtd">
+
+<dwr>
+
+  <allow>
+
+	<!--  Exemplo (recomendo não tirar, inicialmente) -->
+    <create creator="new" javascript="JDate">
+      <param name="class" value="java.util.Date"/>
+    </create>
+
+	<!--  Mapeamento dos beans-entidades -->
+	<convert converter="bean" match="br.com.seatecnologia.coral.vo.Tiddler">
+		<param name="exclude" value="text, modified, created, links, linksUpdated, tags, fields, needsLoading, getLinks, getInheritedFields, incChangeCount, clearChangeCount, isTouched, toRssItem, saveToRss, set, assign, getTags, isTagged, escapeLineBreaks, changed, getSubtitle, isReadOnly, autoLinkWikiWords, generateFingerprint, getServerType, getAdaptor, loadFromDiv, saveToDiv"/>
+	</convert>
+ 
+	<!-- Cada servico precisa de uma tag <create> dessas.
+		O atributo "javascript" é o nome do javascript que você deve importar.
+		O valor do parâmetro "beanName" deve ser o nome do bean no XML do Spring.
+	-->
+	<create creator="spring" javascript="tiddlerService">
+	    <param name="beanName" value="tiddlerService"/>
+	</create>
+
+
+
+	<create creator="new" javascript="uploadImportHelper">
+	    <param name="class" value="br.com.seatecnologia.coral.web.UploadImportHelper"/>
+	</create>
+
+
+  </allow>
+  
+</dwr>

@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+          
+<hibernate-mapping package="br.com.seatecnologia.coral.vo">
+	<class name="Tiddler" table="TIDDLER">
+		<id
+			column="id"
+			name="Id"
+			type="integer">
+			<generator class="increment" />
+		</id>
+		<property
+			column="namespace"
+			length="255"
+			name="namespace"
+			not-null="true"
+			type="java.lang.String"
+		 />
+		<property
+			column="title"
+			length="255"
+			name="title"
+			not-null="true"
+			type="java.lang.String"
+		 />
+		<property
+			column="text"
+			name="encodedText"
+			not-null="false"
+			type="java.lang.String"
+		 />
+		<property
+			column="tags"
+			length="255"
+			name="tagsString"
+			type="java.lang.String"
+		 />
+		<property
+			column="created"
+			length="255"
+			name="createdString"
+			not-null="true"
+			type="java.lang.String"
+		 />
+		<property
+			column="modified"
+			length="255"
+			name="modifiedString"
+			not-null="true"
+			type="java.lang.String"
+		 />
+		<property
+			column="modifier"
+			length="255"
+			name="modifier"
+			not-null="true"
+			type="java.lang.String"
+		 />
+	</class>
+</hibernate-mapping>

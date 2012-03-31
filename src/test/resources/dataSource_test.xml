@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>	
+
+   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="configLocation">
+			<value>classpath:hibernate_teste.cfg.xml</value>
+		</property>
+       <property name="dataSource">
+           <ref bean="dataSource"/>
+       </property>
+   </bean>
+	
+	
+	<!--  datasource de teste -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass">
+            <value>org.hsqldb.jdbcDriver</value>
+        </property>
+        <property name="jdbcUrl">
+            <value>jdbc:hsqldb:mem:coralBDteste</value>
+        </property>
+        <property name="user">
+            <value>sa</value>
+        </property>
+        <property name="password">
+            <value></value>
+        </property>
+    </bean>
+
+</beans>
